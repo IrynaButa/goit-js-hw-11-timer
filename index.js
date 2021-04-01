@@ -28,8 +28,10 @@ class CountdownTimer {
         this.targetDate = targetDate; 
     }
     intervalId = setInterval(() => {
-            const now = Date.now();
-            const time =  this.targetDate - now;
+        const now = Date.now();
+        const deltaTime = this.targetDate - now;
+        const time = this.getTime(deltaTime);
+        
         this.updateClockface(time);
         this.stopCounting(time);     
     }, 1000);
@@ -40,19 +42,20 @@ class CountdownTimer {
             refs.timerNumbers.innerHTML = "BOOM!"
         }
     }
-   
-    updateClockface(time) {
+    updateClockface({days, hours, mins, secs}) {    
+    refs.days.textContent = `${days}`;
+    refs.hours.textContent = `${hours}`;
+    refs.mins.textContent = `${mins}`;
+    refs.secs.textContent = `${secs}`;  
+    }
+    getTime(time) {
         const days = this.pad(Math.floor(time / (1000 * 60 * 60 * 24)));
     const hours = this.pad(
       Math.floor((time % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
     );
     const mins = this.pad(Math.floor((time % (1000 * 60 * 60)) / (1000 * 60)));
-    const secs = this.pad(Math.floor((time % (1000 * 60)) / 1000));
-     refs.days.textContent = `${days}`;
-    refs.hours.textContent = `${hours}`;
-    refs.mins.textContent = `${mins}`;
-    refs.secs.textContent = `${secs}`;  
-    //refs.timerNumbers.textContent = `${days}d:${hours}h:${mins}m:${secs}s`;
+        const secs = this.pad(Math.floor((time % (1000 * 60)) / 1000));
+        return { days, hours, mins, secs };
     }
      pad(value) {
     return String(value).padStart(2, '0');
@@ -67,8 +70,25 @@ const timer = new CountdownTimer({
 
 
 
-
-
+// class CountdownTimer {
+//     constructor({selector, targetDate}) {
+//         this.targetDate = targetDate;
+//         this.intervalId = null;
+//         this.init();    
+//   }
+//     init() {
+//         this.intervalId = setInterval(() => {
+//         const now = Date.now();
+//         const deltaTime = this.targetDate - now;
+//       const time = this.getTimeComponents(deltaTime);
+//     this.updateClockface(time);
+//         this.stopCounting();     
+//     }, 1000); 
+//     stopCounting(time) {}
+//    updateClockface({days, hours, mins, secs}) {}
+//    getTimeComponents(time) {}
+//   pad(value) {};
+// const timer = new CountdownTimer({});
 
 
 
